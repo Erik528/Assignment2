@@ -1,5 +1,6 @@
 package u.edu.utas.wentianw.myapplication
 
+import u.edu.utas.wentianw.myapplication.PlayerAdapter
 import android.util.Log
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +10,10 @@ import au.edu.utas.kit305.tutorial05.CreateMatchActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
+import android.content.SharedPreferences
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import android.view.View
 
 const val FIREBASE_TAG = "FirebaseLogging"
 
@@ -20,7 +24,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 1. 初始化队伍logo
+        // 检查是否首次登录，显示 banner
+        val sharedPrefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val isFirstLogin = sharedPrefs.getBoolean("first_login", true)
+        val banner = findViewById<ImageView>(R.id.videoBanner)
+
+        if (isFirstLogin) {
+            banner.visibility = View.VISIBLE
+            sharedPrefs.edit().putBoolean("first_login", false).apply()
+        } else {
+            banner.visibility = View.GONE
+        }
+
+        // 设置 RecyclerView 显示玩家卡片
+        val players = listOf(
+            Player("xiye", "F/A MID", 824556),
+            Player("TheShy", "IG / TOP", 572364),
+            Player("Scout", "JDG / MID", 235565)
+        )
+
+        val recyclerView = findViewById<RecyclerView>(R.id.playerRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = PlayerAdapter(players)
+
+        // 设置队伍按钮和跳转逻辑
         val teamContainer = findViewById<LinearLayout>(R.id.teamContainer)
         val teams = listOf("RNG", "EDG", "WE", "LGD")
         for (team in teams) {
@@ -34,39 +61,11 @@ class MainActivity : AppCompatActivity() {
             teamContainer.addView(btn)
         }
 
-        // 2. 设置热门选手列表
-        val players = listOf(
-            Player("xiye", "F/A MID", 824556),
-            Player("TheShy", "IG / TOP", 572364),
-            Player("Scout", "JDG / MID", 235565)
-        )
-
-        val playerList = findViewById<ListView>(R.id.playerList)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, players.map { "${it.name} - ${it.role} (${it.likes})" })
-        playerList.adapter = adapter
-        playerList.setOnItemClickListener { _, _, position, _ ->
-            val selectedPlayer = players[position]
-            val intent = Intent(this, PlayerInfoActivity::class.java)
-            intent.putExtra("playerName", selectedPlayer.name)
-            startActivity(intent)
-        }
-
-        //get db connection
+        // Firebase debug
         val db = Firebase.firestore
-        Log.d("FIREBASE", "Firebase connected: ${db.app.name}")
+        Log.d(FIREBASE_TAG, "Firebase connected: ${db.app.name}")
 
-
-//        // 3. 底部导航跳转
-//        findViewById<Button>(R.id.navHome).setOnClickListener {
-//            Toast.makeText(this, "Already at Home", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        findViewById<Button>(R.id.navTeams).setOnClickListener {
-//            val intent = Intent(this, TeamDetailActivity::class.java)
-//            startActivity(intent)
-//        }
-
-
+        // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {

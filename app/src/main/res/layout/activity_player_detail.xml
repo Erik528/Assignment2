@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 返回按钮 + 编辑按钮 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back"
+                android:layout_alignParentStart="true"
+                android:contentDescription="Back"/>
+
+            <ImageView
+                android:id="@+id/imgEdit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_edit"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="Edit"/>
+        </RelativeLayout>
+
+        <!-- 头像 -->
+        <ImageView
+            android:id="@+id/playerImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/player_default"
+            android:layout_marginTop="16dp" />
+
+        <!-- 姓名和位置 -->
+        <TextView
+            android:id="@+id/txtPlayerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xiye"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"/>
+
+        <TextView
+            android:id="@+id/txtPlayerRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="F/A MID"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 年份和比赛下拉框 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Spinner
+                android:id="@+id/spinnerYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/year_list"
+                android:layout_marginEnd="16dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerTournament"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/tournament_list"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tournament Performance"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+<!--        &lt;!&ndash; 模拟图表区域 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="160dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@drawable/ic_radar_chart"-->
+<!--                android:scaleType="fitCenter"/>-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@drawable/ic_line_chart"-->
+<!--                android:scaleType="fitCenter"/>-->
+<!--        </LinearLayout>-->
+
+        <!-- 统计信息 -->
+        <TextView
+            android:id="@+id/txtKills"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Kills (Per Game): 160 (4.6)"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/txtDeaths"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Deaths (Per Game): 98 (2.8)"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtAssists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Assists (Per Game): 210 (6.0)"
+            android:textSize="16sp"
+            android:layout_marginBottom="32dp"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -11,4 +11,19 @@
         <item>EDG</item>
         <item>WE</item>
     </string-array>
+
+    <string-array name="tournament_list">
+        <item>Demacia Cup</item>
+        <item>LPL Spring</item>
+        <item>LPL Summer</item>
+        <item>MSI</item>
+        <item>Worlds</item>
+    </string-array>
+
+    <string-array name="year_list">
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+    </string-array>
+
 </resources>

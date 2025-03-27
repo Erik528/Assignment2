@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+        <activity android:name=".PlayerDetailActivity" />
         <activity android:name=".PlayerInfoActivity" />
+        <activity android:name=".EditPlayerActivity" />
         <activity android:name=".TeamDetailActivity" />
         <activity android:name="au.edu.utas.kit305.tutorial05.CreateMatchActivity" />
         <activity

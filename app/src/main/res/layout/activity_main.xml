@@ -36,48 +36,23 @@
             android:text="My Favorites" />
     </LinearLayout>
 
-    <!-- 玩家列表 -->
-    <ListView
-        android:id="@+id/playerList"
+    <!-- 静态 Banner 图（仅首次登录显示）-->
+    <ImageView
+        android:id="@+id/videoBanner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner_image"
+        android:visibility="gone" />
+
+    <!-- 替换 ListView 为 RecyclerView 显示玩家信息 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:padding="8dp" />
 
-    <!-- 底部导航栏 -->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/bottomNav"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:background="#eeeeee"-->
-<!--        android:gravity="center"-->
-<!--        android:padding="8dp">-->
-
-<!--        <Button-->
-<!--            android:id="@+id/navHome"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Home" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/navTeams"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Teams" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/navMatches"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Matches" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/navMe"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Me" />-->
-
-<!--    </LinearLayout>-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
