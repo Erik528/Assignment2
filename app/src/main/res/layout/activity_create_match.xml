@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Banner -->
+        <ImageView
+            android:id="@+id/bannerImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/banner_placeholder" />
+
+        <!-- 比赛名称 -->
+        <Spinner
+            android:id="@+id/tournamentSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <!-- Team A / B Toggle -->
+        <RadioGroup
+            android:id="@+id/teamToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+            <RadioButton android:id="@+id/radioTeamA" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Team A" />
+            <RadioButton android:id="@+id/radioTeamB" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Team B" />
+        </RadioGroup>
+
+        <!-- Team Name Dropdown -->
+        <Spinner
+            android:id="@+id/teamNameSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Player List -->
+        <LinearLayout
+            android:id="@+id/playerListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp" />
+
+        <!-- 按钮区 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+            <Button
+                android:id="@+id/btnEndMatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Match" />
+            <Button
+                android:id="@+id/btnStartMatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Match"
+                android:layout_marginStart="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

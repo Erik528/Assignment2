@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "542521992405",
+    "project_id": "assignment2-1900b",
+    "storage_bucket": "assignment2-1900b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542521992405:android:130f567e612d74e2a3ae5c",
+        "android_client_info": {
+          "package_name": "u.edu.utas.wentianw.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJZ0U-8PfhGOmjpMZJfIk5F3q4-1dV46Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

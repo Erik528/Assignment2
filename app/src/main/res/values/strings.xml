@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string-array name="tournament_names">
+        <item>2024 Demacia Cup</item>
+        <item>2023 Demacia Cup</item>
+    </string-array>
+
+    <string-array name="team_names">
+        <item>IG</item>
+        <item>RNG</item>
+        <item>EDG</item>
+        <item>WE</item>
+    </string-array>
+</resources>
