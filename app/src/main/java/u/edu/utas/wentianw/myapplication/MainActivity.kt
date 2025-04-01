@@ -1,5 +1,4 @@
 package u.edu.utas.wentianw.myapplication
-
 import u.edu.utas.wentianw.myapplication.PlayerAdapter
 import android.util.Log
 import android.content.Intent
@@ -14,6 +13,11 @@ import android.content.SharedPreferences
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.os.Build
+import android.view.WindowInsetsController
+import android.view.WindowManager
+import android.graphics.Color
+import com.google.firebase.firestore.FirebaseFirestore
 
 const val FIREBASE_TAG = "FirebaseLogging"
 
@@ -49,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         // 设置队伍按钮和跳转逻辑
         val teamContainer = findViewById<LinearLayout>(R.id.teamContainer)
-        val teams = listOf("RNG", "EDG", "WE", "LGD")
+        val teams = listOf("RNG", "EDG", "WE", "LGD","IG")
         for (team in teams) {
             val btn = Button(this)
             btn.text = team
@@ -88,5 +92,59 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-    }
+
+
+//// 1. 添加队伍列表
+//        listOf("RNG", "IG","LGD","EDG", "WE").forEach { teamName ->
+//            db.collection("team_stats").document(teamName)
+//                .set(hashMapOf<String, Any>()) // 空文档仅用于标识队伍
+//        }
+//
+//// 2. 添加统计数据
+//        val year = "2023"
+//        val stats = mapOf(
+//            "RNG" to mapOf(
+//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
+//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
+//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
+//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
+//            ),
+//            "WE" to mapOf(
+//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
+//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
+//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
+//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
+//            ),
+//            "IG" to mapOf(
+//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
+//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
+//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
+//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
+//            ),
+//            "LGD" to mapOf(
+//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
+//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
+//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
+//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
+//            ),
+//            "EDG" to mapOf(
+//                "Q1" to mapOf("kda" to 9.8,  "mvp" to 2, "players" to 5),
+//                "Q2" to mapOf("kda" to 11.1, "mvp" to 3, "players" to 5),
+//                "Q3" to mapOf("kda" to 10.5, "mvp" to 1, "players" to 5),
+//                "Q4" to mapOf("kda" to 13.2, "mvp" to 4, "players" to 5)
+//            )
+//        )
+//        stats.forEach { (team, data) ->
+//            db.collection("team_stats").document("$year-$team")
+//                .set(data)
+//                .addOnSuccessListener {
+//                    Log.d(FIREBASE_TAG, "$team 数据添加成功")
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.e(FIREBASE_TAG, "添加失败: ${e.message}")
+//                }
+//        }
+
+        }
+
 }
