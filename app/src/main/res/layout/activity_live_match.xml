@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!-- 比赛标题和视频占位图 -->
+    <TextView
+        android:id="@+id/txtMatchTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Worlds 2024 - IG vs T1 - Grand Final"
+        android:textSize="20sp"
+        android:padding="16dp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/imgLiveVideoPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/live_video_placeholder"
+        android:scaleType="centerCrop"/>
+
+    <!-- 选项卡按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnLiveboard"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Liveboard"
+            android:backgroundTint="@color/selected_tab_color"/>
+
+        <Button
+            android:id="@+id/btnPlayertrack"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Playertrack"/>
+    </LinearLayout>
+
+    <!-- 数据展示区域 -->
+    <TableLayout
+        android:id="@+id/tblLiveData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:padding="16dp">
+
+        <!-- 动态添加数据行 -->
+    </TableLayout>
+
+    <!-- 刷新按钮 -->
+    <Button
+        android:id="@+id/btnRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refresh Data"
+        android:layout_margin="16dp"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled" />
+</LinearLayout>

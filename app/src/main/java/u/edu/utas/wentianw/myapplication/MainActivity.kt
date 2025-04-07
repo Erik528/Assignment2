@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this, "Already at Home", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_teams -> {
@@ -86,7 +87,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_me -> {
-                    Toast.makeText(this, "Me clicked", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, LiveMatchActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
