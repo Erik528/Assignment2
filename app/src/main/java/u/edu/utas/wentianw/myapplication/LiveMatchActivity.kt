@@ -33,8 +33,14 @@ class LiveMatchActivity : AppCompatActivity() {
             loadLiveData()
         }
 
+
+        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
         // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.selectedItemId = R.id.nav_me
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -75,8 +81,10 @@ class LiveMatchActivity : AppCompatActivity() {
     }
 
     private fun showPlayertrack() {
-        // 实现Playertrack数据展示逻辑（需额外开发）
-        Toast.makeText(this, "Playertrack功能开发中", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, PlayerTrackActivity::class.java).apply {
+            putExtra("MATCH_ID", currentMatchId) // 传递比赛ID
+        }
+        startActivity(intent)
     }
 
     private fun loadLiveData() {

@@ -1,0 +1,148 @@
+package u.edu.utas.wentianw.myapplication
+import android.content.Intent
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+
+class PlayerTrackActivity : AppCompatActivity() {
+    private lateinit var db: FirebaseFirestore
+    private lateinit var currentMatchId: String
+    private var selectedTeam = "teamA"
+    private var selectedPlayerId: String? = null
+    private var selectedSkill: String? = null
+
+    // 声明视图组件
+    private lateinit var etKills: EditText
+    private lateinit var etDeaths: EditText
+    private lateinit var etAssists: EditText
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_player_track)
+
+        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        // 初始化视图组件
+        etKills = findViewById(R.id.etKills)
+        etDeaths = findViewById(R.id.etDeaths)
+        etAssists = findViewById(R.id.etAssists)
+
+        db = FirebaseFirestore.getInstance()
+        currentMatchId = intent.getStringExtra("MATCH_ID") ?: "worlds2024_final"
+
+        setupTeamSelection()
+        setupSkillSelection()
+        setupSaveButton()
+    }
+
+    private fun setupTeamSelection() {
+        val rgTeam = findViewById<RadioGroup>(R.id.rgTeam)
+        rgTeam.setOnCheckedChangeListener { _, checkedId ->
+            selectedTeam = when (checkedId) {
+                R.id.rbTeamA -> "teamA"
+                R.id.rbTeamB -> "teamB"
+                else -> "teamA"
+            }
+            loadPlayers()
+        }
+        rgTeam.check(R.id.rbTeamA)
+    }
+
+    private fun loadPlayers() {
+        val llPlayers = findViewById<LinearLayout>(R.id.llPlayers)
+        llPlayers.removeAllViews()
+
+        db.collection("live_matches").document(currentMatchId)
+            .get()
+            .addOnSuccessListener { document ->
+                val team = document.get(selectedTeam) as? Map<*, *>
+                val players = team?.get("players") as? Map<*, *>
+
+                players?.keys?.forEach { playerId ->
+                    val player = players?.get(playerId) as? Map<*, *> ?: return@forEach
+                    val imageButton = ImageButton(this).apply {
+                        layoutParams = LinearLayout.LayoutParams(100, 100).apply {
+                            marginEnd = 16
+                        }
+                        // 添加空安全处理
+                        val playerName = player["name"] as? String ?: "Unknown Player"
+                        setImageResource(getPlayerAvatar(playerName))
+                        setOnClickListener {
+                            selectPlayer(playerId as String, player)
+                        }
+                    }
+                    llPlayers.addView(imageButton)
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "加载选手失败: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun selectPlayer(playerId: String, playerData: Map<*, *>) {
+        selectedPlayerId = playerId
+        findViewById<TextView>(R.id.tvSelectedPlayer).text =
+            "Selected: ${playerData["name"]} (${playerData["kills"]}/${playerData["deaths"]}/${playerData["assists"]})"
+
+        etKills.setText(playerData["kills"]?.toString() ?: "0")
+        etDeaths.setText(playerData["deaths"]?.toString() ?: "0")
+        etAssists.setText(playerData["assists"]?.toString() ?: "0")
+    }
+
+    private fun setupSkillSelection() {
+        findViewById<RadioGroup>(R.id.rgSkills).setOnCheckedChangeListener { _, checkedId ->
+            selectedSkill = when (checkedId) {
+                R.id.rbQ -> "Q"
+                R.id.rbW -> "W"
+                R.id.rbE -> "E"
+                R.id.rbR -> "R"
+                else -> null
+            }
+        }
+    }
+
+    private fun setupSaveButton() {
+        findViewById<Button>(R.id.btnSave).setOnClickListener {
+            if (selectedPlayerId == null || selectedSkill == null) {
+                Toast.makeText(this, "请选择选手和技能", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 安全转换输入值
+            val kills = etKills.text.toString().toIntOrNull() ?: 0
+            val deaths = etDeaths.text.toString().toIntOrNull() ?: 0
+            val assists = etAssists.text.toString().toIntOrNull() ?: 0
+
+            val updates = hashMapOf<String, Any>(
+                "$selectedTeam.players.$selectedPlayerId.kills" to kills,
+                "$selectedTeam.players.$selectedPlayerId.deaths" to deaths,
+                "$selectedTeam.players.$selectedPlayerId.assists" to assists,
+                "$selectedTeam.players.$selectedPlayerId.last_skill" to selectedSkill!!,
+                "$selectedTeam.players.$selectedPlayerId.update_time" to FieldValue.serverTimestamp()
+            )
+
+            db.collection("live_matches").document(currentMatchId)
+                .update(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "更新成功", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "更新失败: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+        }
+    }
+
+    private fun getPlayerAvatar(name: String): Int = when (name.lowercase()) {
+        "the shy" -> R.drawable.theshy_avatar
+        "meiko" -> R.drawable.meiko_avatar
+        "gala" -> R.drawable.gala_avatar
+        "jiejie" -> R.drawable.jiejie_avatar
+        "rookie" -> R.drawable.rookie_avatar
+        else -> R.drawable.ic_team
+    }
+}

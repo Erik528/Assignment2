@@ -17,6 +17,9 @@
         <activity android:name=".EditPlayerActivity" />
         <activity android:name=".TeamDetailActivity" />
         <activity android:name=".LiveMatchActivity" />
+        <activity android:name=".PlayerTrackActivity"
+            android:parentActivityName=".LiveMatchActivity">
+        </activity>
         <activity android:name="au.edu.utas.kit305.tutorial05.CreateMatchActivity" />
         <activity
             android:name=".MainActivity"

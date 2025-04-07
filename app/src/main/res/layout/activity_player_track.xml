@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Top bar with back button and title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:scaleType="fitCenter"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:id="@+id/txtMatchTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Worlds 2024 - IG vs T1 - Grand Final"
+            android:textSize="20sp"
+            android:paddingStart="12dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Live video placeholder -->
+    <ImageView
+        android:id="@+id/imgLiveVideoPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/live_video_placeholder"
+        android:scaleType="centerCrop" />
+
+    <!-- 战队选择 -->
+    <RadioGroup
+        android:id="@+id/rgTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rbTeamA"
+            android:text="IG"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/rbTeamB"
+            android:text="T1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </RadioGroup>
+
+    <!-- 队员列表 -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/llPlayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+    </HorizontalScrollView>
+
+    <!-- 数据编辑区 -->
+    <TextView
+        android:id="@+id/tvSelectedPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selected: -"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/etKills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kills"
+        android:inputType="number"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/etDeaths"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Deaths"
+        android:inputType="number"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/etAssists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Assists"
+        android:inputType="number"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 技能选择 -->
+    <RadioGroup
+        android:id="@+id/rgSkills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+        <RadioButton
+            android:id="@+id/rbQ"
+            android:text="Q"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/rbW"
+            android:text="W"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/rbE"
+            android:text="E"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/rbR"
+            android:text="R"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Changes"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>
