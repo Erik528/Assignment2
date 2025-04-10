@@ -1,105 +1,180 @@
 package au.edu.utas.kit305.tutorial05
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import u.edu.utas.wentianw.myapplication.LiveMatchActivity
+import u.edu.utas.wentianw.myapplication.MainActivity
 import u.edu.utas.wentianw.myapplication.R
+import u.edu.utas.wentianw.myapplication.TeamDetailActivity
 
 class CreateMatchActivity : AppCompatActivity() {
-    private val db = Firebase.firestore
-    private val teamPlayers = mapOf(
-        "IG" to listOf("TheShy (TOP)", "Rookie (MID)"),
-        "RNG" to listOf("Xiaohu (MID)", "GALA (ADC)"),
-        "EDG" to listOf("Scout (MID)", "Meiko (SUP)"),
-        "WE" to listOf("Shanks (MID)", "Missing (SUP)")
-    )
 
-    private var selectedTeamA: String? = null
-    private var selectedTeamB: String? = null
+    private lateinit var editTeamNameA: EditText
+    private lateinit var editTeamNameB: EditText
+    private lateinit var btnAddPlayerA: Button
+    private lateinit var btnAddPlayerB: Button
+    private lateinit var playerListA: LinearLayout
+    private lateinit var playerListB: LinearLayout
+    private lateinit var tournamentSpinner: Spinner
+    private lateinit var btnStartMatch: Button
+    private lateinit var btnEndMatch: Button
+
+    private val playersA = mutableListOf<String>()
+    private val playersB = mutableListOf<String>()
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_match)
 
-        val tournamentSpinner = findViewById<Spinner>(R.id.tournamentSpinner)
-        val teamNameSpinner = findViewById<Spinner>(R.id.teamNameSpinner)
-        val playerListLayout = findViewById<LinearLayout>(R.id.playerListLayout)
-        val teamToggle = findViewById<RadioGroup>(R.id.teamToggle)
-        val btnStartMatch = findViewById<Button>(R.id.btnStartMatch)
+        // 初始化视图
+        editTeamNameA = findViewById(R.id.editTeamNameA)
+        editTeamNameB = findViewById(R.id.editTeamNameB)
+        btnAddPlayerA = findViewById(R.id.btnAddPlayerA)
+        btnAddPlayerB = findViewById(R.id.btnAddPlayerB)
+        playerListA = findViewById(R.id.playerListA)
+        playerListB = findViewById(R.id.playerListB)
+        tournamentSpinner = findViewById(R.id.tournamentSpinner)
+        btnStartMatch = findViewById(R.id.btnStartMatch)
+        btnEndMatch = findViewById(R.id.btnEndMatch)
 
-        val tournamentAdapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.tournament_names,
-            android.R.layout.simple_spinner_item
-        )
-        tournamentSpinner.adapter = tournamentAdapter
+        // 设置比赛名称下拉菜单
+        val tournaments = listOf("2024 Demacia Cup", "2023 Demacia Cup")
+        tournamentSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tournaments)
 
-        val fullTeamList = resources.getStringArray(R.array.team_names).toList()
-        val teamAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, fullTeamList.toMutableList())
-        teamNameSpinner.adapter = teamAdapter
+        // 添加队员按钮
+        btnAddPlayerA.setOnClickListener {
+            showAddPlayerDialog(playersA, playerListA)
+        }
 
-        // 监听选择团队
-        teamNameSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: android.view.View?, position: Int, id: Long) {
-                val selectedTeam = fullTeamList[position]
-                if (teamToggle.checkedRadioButtonId == R.id.radioTeamA) {
-                    selectedTeamA = selectedTeam
-                } else {
-                    selectedTeamB = selectedTeam
-                }
+        btnAddPlayerB.setOnClickListener {
+            showAddPlayerDialog(playersB, playerListB)
+        }
 
-                updateTeamList(teamNameSpinner, teamAdapter)
-                updatePlayerList(selectedTeam, playerListLayout)
+        // 开始比赛
+        btnStartMatch.setOnClickListener {
+            val teamAName = editTeamNameA.text.toString().trim()
+            val teamBName = editTeamNameB.text.toString().trim()
+
+            if (teamAName.isEmpty() || teamBName.isEmpty()) {
+                Toast.makeText(this, "请输入两个队伍名称", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
-
-        teamToggle.setOnCheckedChangeListener { _, _ ->
-            updateTeamList(teamNameSpinner, teamAdapter)
-        }
-
-        btnStartMatch.setOnClickListener {
-            if (selectedTeamA == null || selectedTeamB == null || selectedTeamA == selectedTeamB) {
-                Toast.makeText(this, "请选择两个不同的队伍", Toast.LENGTH_SHORT).show()
+            if (playersA.size < 2 || playersB.size < 2) {
+                Toast.makeText(this, "每队至少需要两位成员", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val matchData = hashMapOf(
                 "tournament" to tournamentSpinner.selectedItem.toString(),
-                "teamA" to selectedTeamA,
-                "teamB" to selectedTeamB
+                "teamA" to teamAName,
+                "teamB" to teamBName,
+                "playersA" to playersA,
+                "playersB" to playersB,
+                "status" to "ongoing"
             )
 
             db.collection("matches").add(matchData)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Match created！", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "比赛创建成功！", Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "create failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "创建失败", Toast.LENGTH_SHORT).show()
                 }
         }
+
+        // 结束比赛
+        btnEndMatch.setOnClickListener {
+            Toast.makeText(this, "比赛已结束", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        // 返回按钮功能
+        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        // 底部导航栏逻辑
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.selectedItemId = R.id.nav_matches
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_teams -> {
+                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    true
+                }
+                R.id.nav_matches -> {
+                    startActivity(Intent(this, CreateMatchActivity::class.java))
+                    true
+                }
+                R.id.nav_me -> {
+                    val intent = Intent(this, LiveMatchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 
-    private fun updateTeamList(spinner: Spinner, adapter: ArrayAdapter<String>) {
-        val current = if (findViewById<RadioButton>(R.id.radioTeamA).isChecked) selectedTeamB else selectedTeamA
-        val allTeams = resources.getStringArray(R.array.team_names).toList()
-        val filteredTeams = allTeams.filter { it != current }
-        adapter.clear()
-        adapter.addAll(filteredTeams)
-        adapter.notifyDataSetChanged()
+    // 添加成员对话框
+    private fun showAddPlayerDialog(playerList: MutableList<String>, layout: LinearLayout) {
+        val input = EditText(this)
+        AlertDialog.Builder(this)
+            .setTitle("添加选手")
+            .setView(input)
+            .setPositiveButton("添加") { _, _ ->
+                val name = input.text.toString().trim()
+                if (name.isNotEmpty()) {
+                    playerList.add(name)
+                    refreshPlayerListUI(playerList, layout)
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
     }
 
-    private fun updatePlayerList(team: String, layout: LinearLayout) {
+    // 刷新成员显示列表
+    private fun refreshPlayerListUI(players: MutableList<String>, layout: LinearLayout) {
         layout.removeAllViews()
-        teamPlayers[team]?.forEach { name ->
-            val view = TextView(this)
-            view.text = name
-            view.textSize = 16f
-            layout.addView(view)
+        players.forEachIndexed { index, name ->
+            val row = LinearLayout(this)
+            row.orientation = LinearLayout.HORIZONTAL
+            row.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            row.setPadding(0, 8, 0, 8)
+
+            val text = TextView(this)
+            text.text = name
+            text.textSize = 16f
+            text.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+
+            val deleteBtn = Button(this)
+            deleteBtn.text = "❌"
+            deleteBtn.setOnClickListener {
+                players.removeAt(index)
+                refreshPlayerListUI(players, layout)
+            }
+
+            row.addView(text)
+            row.addView(deleteBtn)
+            layout.addView(row)
         }
     }
 }

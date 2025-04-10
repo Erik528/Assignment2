@@ -53,7 +53,7 @@ class LiveMatchActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_matches -> {
-                    startActivity(Intent(this, CreateMatchActivity::class.java))
+                    startActivity(Intent(this, AllMatchesActivity::class.java))
                     true
                 }
                 R.id.nav_me -> {

@@ -35,9 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         if (isFirstLogin) {
             banner.visibility = View.VISIBLE
-            sharedPrefs.edit().putBoolean("first_login", false).apply()
+//            banner.visibility = View.VISIBLE
+//            sharedPrefs.edit().putBoolean("first_login", false).apply()
         } else {
-            banner.visibility = View.GONE
+            banner.visibility = View.VISIBLE
         }
 
         // 设置 RecyclerView 显示玩家卡片
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_matches -> {
-                    startActivity(Intent(this, CreateMatchActivity::class.java))
+                    startActivity(Intent(this, AllMatchesActivity::class.java))
                     true
                 }
                 R.id.nav_me -> {
@@ -95,57 +96,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-//// 1. 添加队伍列表
-//        listOf("RNG", "IG","LGD","EDG", "WE").forEach { teamName ->
-//            db.collection("team_stats").document(teamName)
-//                .set(hashMapOf<String, Any>()) // 空文档仅用于标识队伍
-//        }
-//
-//// 2. 添加统计数据
-//        val year = "2023"
-//        val stats = mapOf(
-//            "RNG" to mapOf(
-//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
-//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
-//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
-//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
-//            ),
-//            "WE" to mapOf(
-//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
-//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
-//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
-//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
-//            ),
-//            "IG" to mapOf(
-//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
-//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
-//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
-//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
-//            ),
-//            "LGD" to mapOf(
-//                "Q1" to mapOf("kda" to 12.6, "mvp" to 3, "players" to 5),
-//                "Q2" to mapOf("kda" to 10.2, "mvp" to 2, "players" to 5),
-//                "Q3" to mapOf("kda" to 8.9,  "mvp" to 4, "players" to 5),
-//                "Q4" to mapOf("kda" to 11.3, "mvp" to 5, "players" to 5)
-//            ),
-//            "EDG" to mapOf(
-//                "Q1" to mapOf("kda" to 9.8,  "mvp" to 2, "players" to 5),
-//                "Q2" to mapOf("kda" to 11.1, "mvp" to 3, "players" to 5),
-//                "Q3" to mapOf("kda" to 10.5, "mvp" to 1, "players" to 5),
-//                "Q4" to mapOf("kda" to 13.2, "mvp" to 4, "players" to 5)
-//            )
-//        )
-//        stats.forEach { (team, data) ->
-//            db.collection("team_stats").document("$year-$team")
-//                .set(data)
-//                .addOnSuccessListener {
-//                    Log.d(FIREBASE_TAG, "$team 数据添加成功")
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.e(FIREBASE_TAG, "添加失败: ${e.message}")
-//                }
-//        }
 
         }
 

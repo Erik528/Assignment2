@@ -1,10 +1,12 @@
 package u.edu.utas.wentianw.myapplication
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class TeamDetailActivity : AppCompatActivity() {
@@ -32,6 +34,37 @@ class TeamDetailActivity : AppCompatActivity() {
         setupSpinnerListeners()
 
 
+        // 返回按钮功能
+        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        // 底部导航栏逻辑
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.selectedItemId = R.id.nav_teams
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_teams -> {
+                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    true
+                }
+                R.id.nav_matches -> {
+                    startActivity(Intent(this, AllMatchesActivity::class.java))
+                    true
+                }
+                R.id.nav_me -> {
+                    val intent = Intent(this, LiveMatchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
 
