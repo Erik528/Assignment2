@@ -7,11 +7,11 @@
     android:background="@android:color/white">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <!-- 返回按钮 + 编辑按钮 -->
+        <!-- 顶部返回和编辑按钮 -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -20,17 +20,17 @@
                 android:id="@+id/imgBack"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back"
                 android:layout_alignParentStart="true"
-                android:contentDescription="Back"/>
+                android:contentDescription="Back"
+                android:src="@drawable/ic_arrow_back" />
 
             <ImageView
                 android:id="@+id/imgEdit"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_edit"
                 android:layout_alignParentEnd="true"
-                android:contentDescription="Edit"/>
+                android:contentDescription="Edit"
+                android:src="@drawable/ic_edit" />
         </RelativeLayout>
 
         <!-- 头像 -->
@@ -39,104 +39,119 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/player_default"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:src="@drawable/player_default" />
 
         <!-- 姓名和位置 -->
         <TextView
             android:id="@+id/txtPlayerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xiye"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp"
+            android:text="Player Name"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtPlayerRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="F/A MID"
-            android:textSize="16sp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:text="Team / Role"
+            android:textSize="16sp" />
 
-        <!-- 年份和比赛下拉框 -->
+        <!-- 下拉选择 年份 + 比赛 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:layout_marginBottom="16dp">
+            android:orientation="horizontal">
 
             <Spinner
                 android:id="@+id/spinnerYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/year_list"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:entries="@array/year_list" />
 
             <Spinner
                 android:id="@+id/spinnerTournament"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/tournament_list"/>
+                android:entries="@array/tournament_list" />
         </LinearLayout>
 
+        <!-- 标题 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="Tournament Performance"
-            android:textStyle="bold"
             android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
+            android:textStyle="bold" />
 
-<!--        &lt;!&ndash; 模拟图表区域 &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="160dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="center">-->
+        <!-- 统计数据 -->
+        <TextView
+            android:id="@+id/txtTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Team: -"
+            android:textSize="16sp" />
 
-<!--            <ImageView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:src="@drawable/ic_radar_chart"-->
-<!--                android:scaleType="fitCenter"/>-->
+        <TextView
+            android:id="@+id/txtPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Role: -"
+            android:textSize="16sp" />
 
-<!--            <ImageView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:src="@drawable/ic_line_chart"-->
-<!--                android:scaleType="fitCenter"/>-->
-<!--        </LinearLayout>-->
-
-        <!-- 统计信息 -->
         <TextView
             android:id="@+id/txtKills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Kills (Per Game): 160 (4.6)"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="8dp"
+            android:text="Kills: -"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/txtDeaths"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Deaths (Per Game): 98 (2.8)"
-            android:textSize="16sp"/>
+            android:text="Deaths: -"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/txtAssists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Assists (Per Game): 210 (6.0)"
-            android:textSize="16sp"
-            android:layout_marginBottom="32dp"/>
+            android:text="Assists: -"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtKPG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="KPG: -"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtDPG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DPG: -"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtAPG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="APG: -"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </ScrollView>

@@ -28,7 +28,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 检查是否首次登录，显示 banner
+//        insertStructuredPlayerData()
+
+
         val sharedPrefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val isFirstLogin = sharedPrefs.getBoolean("first_login", true)
         val banner = findViewById<ImageView>(R.id.videoBanner)
@@ -43,9 +45,17 @@ class MainActivity : AppCompatActivity() {
 
         // 设置 RecyclerView 显示玩家卡片
         val players = listOf(
-            Player("xiye", "F/A MID", 824556),
-            Player("TheShy", "IG / TOP", 572364),
-            Player("Scout", "JDG / MID", 235565)
+            Player("TheShy", "IG / TOP", 879134),
+            Player("Rookie", "IG / MID", 752120),
+            Player("Meiko", "IG / SUP", 692341),
+            Player("Jiejie", "IG / JUNGLE", 633220),
+            Player("Gala", "IG / ADC", 612888),
+
+            Player("Keria", "T1 / SUP", 903211),
+            Player("Faker", "T1 / MID", 1599999),
+            Player("Oner", "T1 / JUNGLE", 778421),
+            Player("Zeus", "T1 / TOP", 842777),
+            Player("Gumayusi", "T1 / ADC", 755521)
         )
 
         val recyclerView = findViewById<RecyclerView>(R.id.playerRecyclerView)
@@ -66,9 +76,10 @@ class MainActivity : AppCompatActivity() {
             teamContainer.addView(btn)
         }
 
-        // Firebase debug
-        val db = Firebase.firestore
-        Log.d(FIREBASE_TAG, "Firebase connected: ${db.app.name}")
+//        // Firebase debug
+//        val db = Firebase.firestore
+//        Log.d(FIREBASE_TAG, "Firebase connected: ${db.app.name}")
+
 
         // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -96,7 +107,45 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+//    fun insertStructuredPlayerData() {
+//        val db = FirebaseFirestore.getInstance()
+//
+//        val tournaments = listOf("Demacia Cup", "LPL Spring", "LPL Summer", "MSI", "Worlds")
+//        val years = listOf("2022", "2023", "2024")
+//
+//        val players = listOf(
+//            mapOf("name" to "theshy", "team" to "IG", "position" to "TOP", "kills" to 321, "deaths" to 120, "assists" to 510, "kpg" to 4.5, "dpg" to 1.8, "apg" to 7.1),
+//            mapOf("name" to "rookie", "team" to "IG", "position" to "MID", "kills" to 289, "deaths" to 100, "assists" to 440, "kpg" to 4.0, "dpg" to 1.6, "apg" to 6.0),
+//            mapOf("name" to "meiko", "team" to "IG", "position" to "SUPPORT", "kills" to 123, "deaths" to 90, "assists" to 830, "kpg" to 1.2, "dpg" to 1.0, "apg" to 8.3),
+//            mapOf("name" to "jiejie", "team" to "IG", "position" to "JUNGLE", "kills" to 205, "deaths" to 85, "assists" to 390, "kpg" to 3.5, "dpg" to 1.2, "apg" to 6.4),
+//            mapOf("name" to "gala", "team" to "IG", "position" to "ADC", "kills" to 377, "deaths" to 130, "assists" to 480, "kpg" to 5.0, "dpg" to 2.0, "apg" to 6.5),
+//            mapOf("name" to "faker", "team" to "T1", "position" to "MID", "kills" to 500, "deaths" to 150, "assists" to 700, "kpg" to 6.0, "dpg" to 1.5, "apg" to 7.7),
+//            mapOf("name" to "keria", "team" to "T1", "position" to "SUPPORT", "kills" to 110, "deaths" to 95, "assists" to 880, "kpg" to 1.1, "dpg" to 1.2, "apg" to 8.8),
+//            mapOf("name" to "oner", "team" to "T1", "position" to "JUNGLE", "kills" to 220, "deaths" to 100, "assists" to 420, "kpg" to 3.8, "dpg" to 1.4, "apg" to 6.5),
+//            mapOf("name" to "zeus", "team" to "T1", "position" to "TOP", "kills" to 300, "deaths" to 110, "assists" to 450, "kpg" to 4.2, "dpg" to 1.6, "apg" to 6.7),
+//            mapOf("name" to "gumayusi", "team" to "T1", "position" to "ADC", "kills" to 410, "deaths" to 140, "assists" to 510, "kpg" to 5.2, "dpg" to 1.9, "apg" to 6.3)
+//        )
+//
+//        for (year in years) {
+//            for (tournament in tournaments) {
+//                for (player in players) {
+//                    val playerName = player["name"] as String
+//                    db.collection("players")
+//                        .document(year)
+//                        .collection(tournament)
+//                        .document(playerName)
+//                        .set(player)
+//                        .addOnSuccessListener {
+//                            println("✅ Inserted $playerName in $year/$tournament")
+//                        }
+//                        .addOnFailureListener {
+//                            println("❌ Failed to insert $playerName: ${it.message}")
+//                        }
+//                }
+//            }
+//        }
+    }
 
-        }
 
-}
+

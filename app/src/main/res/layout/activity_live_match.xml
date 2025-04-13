@@ -52,10 +52,10 @@
         <Button
             android:id="@+id/btnLiveboard"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Liveboard"
-            android:backgroundTint="@color/selected_tab_color" />
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_purple"
+            android:text="Liveboard" />
 
         <Button
             android:id="@+id/btnPlayertrack"

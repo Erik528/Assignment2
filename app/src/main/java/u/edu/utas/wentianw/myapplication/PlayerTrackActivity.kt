@@ -66,12 +66,14 @@ class PlayerTrackActivity : AppCompatActivity() {
                 players?.keys?.forEach { playerId ->
                     val player = players?.get(playerId) as? Map<*, *> ?: return@forEach
                     val imageButton = ImageButton(this).apply {
-                        layoutParams = LinearLayout.LayoutParams(100, 100).apply {
+                        layoutParams = LinearLayout.LayoutParams(150, 150).apply {
                             marginEnd = 16
                         }
-                        // 添加空安全处理
                         val playerName = player["name"] as? String ?: "Unknown Player"
                         setImageResource(getPlayerAvatar(playerName))
+                        scaleType = ImageView.ScaleType.FIT_CENTER
+                        background = null // 移除默认按钮背景
+                        setPadding(8, 8, 8, 8)
                         setOnClickListener {
                             selectPlayer(playerId as String, player)
                         }
@@ -80,7 +82,7 @@ class PlayerTrackActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "加载选手失败: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "player loading failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -109,7 +111,7 @@ class PlayerTrackActivity : AppCompatActivity() {
     private fun setupSaveButton() {
         findViewById<Button>(R.id.btnSave).setOnClickListener {
             if (selectedPlayerId == null || selectedSkill == null) {
-                Toast.makeText(this, "请选择选手和技能", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "please select skill", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -129,20 +131,26 @@ class PlayerTrackActivity : AppCompatActivity() {
             db.collection("live_matches").document(currentMatchId)
                 .update(updates)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "更新成功", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "update successfully", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "更新失败: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "update failed: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         }
     }
 
     private fun getPlayerAvatar(name: String): Int = when (name.lowercase()) {
-        "the shy" -> R.drawable.theshy_avatar
+        "theshy" -> R.drawable.theshy_avatar
         "meiko" -> R.drawable.meiko_avatar
         "gala" -> R.drawable.gala_avatar
         "jiejie" -> R.drawable.jiejie_avatar
         "rookie" -> R.drawable.rookie_avatar
+
+        "keria" -> R.drawable.keria_avatar
+        "faker" -> R.drawable.faker_avatar
+        "oner" -> R.drawable.oner_avatar
+        "zeus" -> R.drawable.zeus_avatar
+        "gumayusi" -> R.drawable.gumayusi_avatar
         else -> R.drawable.ic_team
     }
 }

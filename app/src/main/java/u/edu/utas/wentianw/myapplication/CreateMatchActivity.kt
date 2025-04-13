@@ -28,6 +28,7 @@ class CreateMatchActivity : AppCompatActivity() {
     private val playersA = mutableListOf<String>()
     private val playersB = mutableListOf<String>()
     private val db = Firebase.firestore
+    val matchRef = db.collection("matches").document()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,16 +64,17 @@ class CreateMatchActivity : AppCompatActivity() {
             val teamBName = editTeamNameB.text.toString().trim()
 
             if (teamAName.isEmpty() || teamBName.isEmpty()) {
-                Toast.makeText(this, "请输入两个队伍名称", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter both team names", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (playersA.size < 2 || playersB.size < 2) {
-                Toast.makeText(this, "每队至少需要两位成员", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Each team must have at least two players", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val matchData = hashMapOf(
+                "id" to matchRef.id,
                 "tournament" to tournamentSpinner.selectedItem.toString(),
                 "teamA" to teamAName,
                 "teamB" to teamBName,
@@ -81,19 +83,19 @@ class CreateMatchActivity : AppCompatActivity() {
                 "status" to "ongoing"
             )
 
-            db.collection("matches").add(matchData)
+            matchRef.set(matchData)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "比赛创建成功！", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Match created successfully!", Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "创建失败", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to create match", Toast.LENGTH_SHORT).show()
                 }
         }
 
         // 结束比赛
         btnEndMatch.setOnClickListener {
-            Toast.makeText(this, "比赛已结束", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Match ended successfully", Toast.LENGTH_SHORT).show()
             finish()
         }
 
@@ -135,16 +137,16 @@ class CreateMatchActivity : AppCompatActivity() {
     private fun showAddPlayerDialog(playerList: MutableList<String>, layout: LinearLayout) {
         val input = EditText(this)
         AlertDialog.Builder(this)
-            .setTitle("添加选手")
+            .setTitle("Add Player")
             .setView(input)
-            .setPositiveButton("添加") { _, _ ->
+            .setPositiveButton("add") { _, _ ->
                 val name = input.text.toString().trim()
                 if (name.isNotEmpty()) {
                     playerList.add(name)
                     refreshPlayerListUI(playerList, layout)
                 }
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton("cancel", null)
             .show()
     }
 
@@ -166,7 +168,7 @@ class CreateMatchActivity : AppCompatActivity() {
             text.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
 
             val deleteBtn = Button(this)
-            deleteBtn.text = "❌"
+            deleteBtn.text = "×"
             deleteBtn.setOnClickListener {
                 players.removeAt(index)
                 refreshPlayerListUI(players, layout)

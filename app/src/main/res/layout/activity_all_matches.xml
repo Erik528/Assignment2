@@ -55,14 +55,31 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/gw4h3begfrc81" />
 
-            <!-- Create Match 按钮 -->
-            <Button
-                android:id="@+id/btnCreateMatch"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="8dp"
-                android:text="Create Match" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/btnCreateMatch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Create Match" />
+
+                <Button
+                    android:id="@+id/btnShare"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Share" />
+
+            </LinearLayout>
+
+
+
 
             <!-- 比赛列表 -->
             <LinearLayout

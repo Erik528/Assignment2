@@ -31,9 +31,10 @@ class PlayerAdapter(private val players: List<MainActivity.Player>) :
         holder.name.text = player.name
         holder.role.text = player.role
         holder.likes.text = player.likes.toString()
-        holder.image.setImageResource(R.drawable.player_default) // 可根据需求替换
 
-        // ✅ 设置点击事件，跳转到 PlayerDetailActivity
+        holder.image.setImageResource(getPlayerAvatar(player.name))
+
+
         val context = holder.itemView.context
         val clickListener = View.OnClickListener {
             val intent = Intent(context, PlayerDetailActivity::class.java)
@@ -43,5 +44,19 @@ class PlayerAdapter(private val players: List<MainActivity.Player>) :
 
         holder.image.setOnClickListener(clickListener)
         holder.name.setOnClickListener(clickListener)
+    }
+
+    private fun getPlayerAvatar(name: String): Int = when (name.lowercase()) {
+        "theshy" -> R.drawable.theshy_avatar
+        "meiko" -> R.drawable.meiko_avatar
+        "gala" -> R.drawable.gala_avatar
+        "jiejie" -> R.drawable.jiejie_avatar
+        "rookie" -> R.drawable.rookie_avatar
+        "keria" -> R.drawable.keria_avatar
+        "faker" -> R.drawable.faker_avatar
+        "oner" -> R.drawable.oner_avatar
+        "zeus" -> R.drawable.zeus_avatar
+        "gumayusi" -> R.drawable.gumayusi_avatar
+        else -> R.drawable.ic_team // 默认头像
     }
 }
