@@ -25,11 +25,10 @@ class MainActivity : AppCompatActivity() {
     data class Player(val name: String, val role: String, val likes: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-//        insertStructuredPlayerData()
-
 
         val sharedPrefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val isFirstLogin = sharedPrefs.getBoolean("first_login", true)
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             banner.visibility = View.VISIBLE
         }
 
-        // 设置 RecyclerView 显示玩家卡片
         val players = listOf(
             Player("TheShy", "IG / TOP", 879134),
             Player("Rookie", "IG / MID", 752120),
@@ -62,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = PlayerAdapter(players)
 
-        // 设置队伍按钮和跳转逻辑
         val teamContainer = findViewById<LinearLayout>(R.id.teamContainer)
         val teams = listOf("RNG", "EDG", "WE", "LGD","IG")
         for (team in teams) {
@@ -81,17 +78,13 @@ class MainActivity : AppCompatActivity() {
 //        Log.d(FIREBASE_TAG, "Firebase connected: ${db.app.name}")
 
 
-        // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
+                R.id.nav_home -> true
+
                 R.id.nav_teams -> {
-                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    startActivity(Intent(this, AllTeamsActivity::class.java))
                     true
                 }
                 R.id.nav_matches -> {

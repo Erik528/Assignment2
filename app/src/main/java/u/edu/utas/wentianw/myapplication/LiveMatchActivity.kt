@@ -2,6 +2,7 @@ package u.edu.utas.wentianw.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import au.edu.utas.kit305.tutorial05.CreateMatchActivity
@@ -14,6 +15,7 @@ class LiveMatchActivity : AppCompatActivity() {
     private var currentMatchId: String = "worlds2024_final" // 示例比赛ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_live_match)
 
@@ -21,13 +23,10 @@ class LiveMatchActivity : AppCompatActivity() {
         tblLiveData = findViewById(R.id.tblLiveData)
         val btnRefresh = findViewById<Button>(R.id.btnRefresh)
 
-        // 初始化选项卡
         setupTabButtons()
 
-        // 加载初始数据
         loadLiveData()
 
-        // 刷新按钮点击事件
         btnRefresh.setOnClickListener {
             tblLiveData.removeAllViews()
             loadLiveData()
@@ -38,7 +37,6 @@ class LiveMatchActivity : AppCompatActivity() {
             finish()
         }
 
-        // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.nav_me
         bottomNav.setOnItemSelectedListener { item ->
@@ -49,7 +47,7 @@ class LiveMatchActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_teams -> {
-                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    startActivity(Intent(this, AllTeamsActivity::class.java))
                     true
                 }
                 R.id.nav_matches -> {
@@ -72,17 +70,16 @@ class LiveMatchActivity : AppCompatActivity() {
 
         btnLiveboard.setOnClickListener { showLiveboard() }
         btnPlayertrack.setOnClickListener { showPlayertrack() }
-        showLiveboard() // 默认显示Liveboard
+        showLiveboard()
     }
 
     private fun showLiveboard() {
-        // 实现Liveboard数据展示逻辑
         loadLiveData()
     }
 
     private fun showPlayertrack() {
         val intent = Intent(this, PlayerTrackActivity::class.java).apply {
-            putExtra("MATCH_ID", currentMatchId) // 传递比赛ID
+            putExtra("MATCH_ID", currentMatchId)
         }
         startActivity(intent)
     }
@@ -96,10 +93,8 @@ class LiveMatchActivity : AppCompatActivity() {
                 }
 
                 snapshot?.let { doc ->
-                    // 清空旧数据
                     tblLiveData.removeAllViews()
 
-                    // 添加表头
                     val headerRow = TableRow(this).apply {
                         addView(createHeaderCell("Stat"))
                         addView(createHeaderCell("Team A"))
@@ -107,7 +102,6 @@ class LiveMatchActivity : AppCompatActivity() {
                     }
                     tblLiveData.addView(headerRow)
 
-                    // 动态添加数据行
                     listOf(
                         Triple("Gold", "gold", "gold"),
                         Triple("Kills", "kills", "kills"),

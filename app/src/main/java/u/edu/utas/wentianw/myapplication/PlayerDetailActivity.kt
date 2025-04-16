@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class PlayerDetailActivity : AppCompatActivity() {
@@ -31,12 +32,15 @@ class PlayerDetailActivity : AppCompatActivity() {
     private var selectedTournament: String = "Demacia Cup"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_detail)
 
         selectedPlayerName = intent.getStringExtra("playerName") ?: return
 
-        // 绑定视图组件
+
+
         spinnerYear = findViewById(R.id.spinnerYear)
         spinnerTournament = findViewById(R.id.spinnerTournament)
         nameText = findViewById(R.id.txtPlayerName)
@@ -69,7 +73,33 @@ class PlayerDetailActivity : AppCompatActivity() {
             finish()
         }
 
-        // Spinner监听
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_teams -> {
+                    startActivity(Intent(this, AllTeamsActivity::class.java))
+                    true
+                }
+                R.id.nav_matches -> {
+                    startActivity(Intent(this, AllMatchesActivity::class.java))
+                    true
+                }
+                R.id.nav_me -> {
+                    val intent = Intent(this, LiveMatchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+
+
         spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 selectedYear = parent?.getItemAtPosition(pos).toString()
@@ -88,7 +118,7 @@ class PlayerDetailActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // 初始化展示一次
+
         loadPlayerStats()
     }
 
@@ -108,7 +138,6 @@ class PlayerDetailActivity : AppCompatActivity() {
                 val dpg = it.getDouble("dpg") ?: 0.0
                 val apg = it.getDouble("apg") ?: 0.0
 
-                // 设置界面文字
                 teamText.text = "Team: $team"
                 positionText.text = "Role: $position"
                 roleText.text = "$team / $position"

@@ -2,12 +2,14 @@ package au.edu.utas.kit305.tutorial05
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import u.edu.utas.wentianw.myapplication.AllTeamsActivity
 import u.edu.utas.wentianw.myapplication.LiveMatchActivity
 import u.edu.utas.wentianw.myapplication.MainActivity
 import u.edu.utas.wentianw.myapplication.R
@@ -31,10 +33,10 @@ class CreateMatchActivity : AppCompatActivity() {
     val matchRef = db.collection("matches").document()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_match)
 
-        // 初始化视图
         editTeamNameA = findViewById(R.id.editTeamNameA)
         editTeamNameB = findViewById(R.id.editTeamNameB)
         btnAddPlayerA = findViewById(R.id.btnAddPlayerA)
@@ -45,11 +47,10 @@ class CreateMatchActivity : AppCompatActivity() {
         btnStartMatch = findViewById(R.id.btnStartMatch)
         btnEndMatch = findViewById(R.id.btnEndMatch)
 
-        // 设置比赛名称下拉菜单
+
         val tournaments = listOf("2024 Demacia Cup", "2023 Demacia Cup")
         tournamentSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tournaments)
 
-        // 添加队员按钮
         btnAddPlayerA.setOnClickListener {
             showAddPlayerDialog(playersA, playerListA)
         }
@@ -58,7 +59,6 @@ class CreateMatchActivity : AppCompatActivity() {
             showAddPlayerDialog(playersB, playerListB)
         }
 
-        // 开始比赛
         btnStartMatch.setOnClickListener {
             val teamAName = editTeamNameA.text.toString().trim()
             val teamBName = editTeamNameB.text.toString().trim()
@@ -93,18 +93,15 @@ class CreateMatchActivity : AppCompatActivity() {
                 }
         }
 
-        // 结束比赛
         btnEndMatch.setOnClickListener {
             Toast.makeText(this, "Match ended successfully", Toast.LENGTH_SHORT).show()
             finish()
         }
 
-        // 返回按钮功能
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
             finish()
         }
 
-        // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.nav_matches
         bottomNav.setOnItemSelectedListener { item ->
@@ -115,7 +112,7 @@ class CreateMatchActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_teams -> {
-                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    startActivity(Intent(this, AllTeamsActivity::class.java))
                     true
                 }
                 R.id.nav_matches -> {
@@ -133,7 +130,6 @@ class CreateMatchActivity : AppCompatActivity() {
 
     }
 
-    // 添加成员对话框
     private fun showAddPlayerDialog(playerList: MutableList<String>, layout: LinearLayout) {
         val input = EditText(this)
         AlertDialog.Builder(this)
@@ -150,7 +146,6 @@ class CreateMatchActivity : AppCompatActivity() {
             .show()
     }
 
-    // 刷新成员显示列表
     private fun refreshPlayerListUI(players: MutableList<String>, layout: LinearLayout) {
         layout.removeAllViews()
         players.forEachIndexed { index, name ->

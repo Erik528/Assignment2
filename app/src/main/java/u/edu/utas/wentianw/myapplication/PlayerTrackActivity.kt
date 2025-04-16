@@ -1,6 +1,7 @@
 package u.edu.utas.wentianw.myapplication
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,12 +15,12 @@ class PlayerTrackActivity : AppCompatActivity() {
     private var selectedPlayerId: String? = null
     private var selectedSkill: String? = null
 
-    // 声明视图组件
     private lateinit var etKills: EditText
     private lateinit var etDeaths: EditText
     private lateinit var etAssists: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_track)
 
@@ -27,7 +28,6 @@ class PlayerTrackActivity : AppCompatActivity() {
             finish()
         }
 
-        // 初始化视图组件
         etKills = findViewById(R.id.etKills)
         etDeaths = findViewById(R.id.etDeaths)
         etAssists = findViewById(R.id.etAssists)

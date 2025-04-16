@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import au.edu.utas.kit305.tutorial05.CreateMatchActivity
@@ -31,6 +32,7 @@ class AllMatchesActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_matches)
 
@@ -48,7 +50,6 @@ class AllMatchesActivity : AppCompatActivity() {
 
         loadMatches()
 
-        // 底部导航栏逻辑
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.nav_matches
         bottomNav.setOnItemSelectedListener { item ->
@@ -59,7 +60,7 @@ class AllMatchesActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_teams -> {
-                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    startActivity(Intent(this, AllTeamsActivity::class.java))
                     true
                 }
                 R.id.nav_matches -> {
@@ -75,7 +76,6 @@ class AllMatchesActivity : AppCompatActivity() {
             }
         }
 
-        // 返回按钮功能
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
             finish()
         }
@@ -164,7 +164,6 @@ class AllMatchesActivity : AppCompatActivity() {
                 append("vs\n")
                 append("${match.teamB} (${match.playersB.joinToString(", ")})\n")
 
-                // 加上比分展示（可选）
                 if (match.status == "ended") {
                     append("Final Score:\n")
                     append("${match.teamA}: ${match.scoreA}\n")

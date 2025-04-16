@@ -57,6 +57,6 @@ class PlayerAdapter(private val players: List<MainActivity.Player>) :
         "oner" -> R.drawable.oner_avatar
         "zeus" -> R.drawable.zeus_avatar
         "gumayusi" -> R.drawable.gumayusi_avatar
-        else -> R.drawable.ic_team // 默认头像
+        else -> R.drawable.ic_team
     }
 }

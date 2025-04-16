@@ -53,7 +53,6 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/team_banner" />
 
-            <!-- 年份和对比队伍选择 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +79,6 @@
                     android:layout_weight="1" />
             </LinearLayout>
 
-            <!-- 数据对比表格 -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

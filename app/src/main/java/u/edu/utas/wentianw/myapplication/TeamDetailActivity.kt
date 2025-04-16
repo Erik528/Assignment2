@@ -18,6 +18,7 @@ class TeamDetailActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_detail)
 
@@ -34,12 +35,11 @@ class TeamDetailActivity : AppCompatActivity() {
         setupSpinnerListeners()
 
 
-        // 返回按钮功能
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
             finish()
         }
 
-        // 底部导航栏逻辑
+
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.nav_teams
         bottomNav.setOnItemSelectedListener { item ->
@@ -50,7 +50,7 @@ class TeamDetailActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_teams -> {
-                    startActivity(Intent(this, TeamDetailActivity::class.java))
+                    startActivity(Intent(this, AllTeamsActivity::class.java))
                     true
                 }
                 R.id.nav_matches -> {
@@ -69,7 +69,6 @@ class TeamDetailActivity : AppCompatActivity() {
 
 
     private fun setupYearSpinner() {
-        // 从Firestore获取可用年份（示例）
         val years = arrayOf("2024", "2023", "2022")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, years)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -77,7 +76,6 @@ class TeamDetailActivity : AppCompatActivity() {
     }
 
     private fun setupOpponentSpinner() {
-        // 从Firestore获取所有队伍（排除当前队伍）
         db.collection("teams")
             .get()
             .addOnSuccessListener { documents ->
@@ -100,7 +98,6 @@ class TeamDetailActivity : AppCompatActivity() {
         opponentSpinner.onItemSelectedListener = listener
     }
 
-    // 创建表头单元格
     private fun createHeaderCell(text: String): TextView {
         return TextView(this).apply {
             this.text = text
@@ -110,7 +107,7 @@ class TeamDetailActivity : AppCompatActivity() {
         }
     }
 
-    // 创建普通单元格
+
     private fun createCell(text: String): TextView {
         return TextView(this).apply {
             this.text = text
