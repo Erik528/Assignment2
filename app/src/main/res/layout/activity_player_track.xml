@@ -81,29 +81,122 @@
         android:textSize="18sp"
         android:layout_marginTop="16dp" />
 
-    <EditText
-        android:id="@+id/etKills"
+    <!-- KDA 结构：每项一组：标题行 + 控制行 -->
+    <!-- Kills -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Kills"
-        android:inputType="number"
-        android:layout_marginTop="8dp"/>
+        android:text="Kills"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/etDeaths"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Deaths"
-        android:inputType="number"
-        android:layout_marginTop="8dp"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
 
-    <EditText
-        android:id="@+id/etAssists"
+        <Button
+            android:id="@+id/btnKillsMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/txtKillsValue"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="8dp" />
+
+        <Button
+            android:id="@+id/btnKillsPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="+" />
+    </LinearLayout>
+
+    <!-- Deaths -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Assists"
-        android:inputType="number"
-        android:layout_marginTop="8dp"/>
+        android:text="Deaths"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/btnDeathsMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/txtDeathsValue"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="8dp" />
+
+        <Button
+            android:id="@+id/btnDeathsPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="+" />
+    </LinearLayout>
+
+    <!-- Assists -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Assists"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/btnAssistsMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/txtAssistsValue"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="8dp" />
+
+        <Button
+            android:id="@+id/btnAssistsPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="+" />
+    </LinearLayout>
+
 
     <!-- 技能选择 -->
     <RadioGroup

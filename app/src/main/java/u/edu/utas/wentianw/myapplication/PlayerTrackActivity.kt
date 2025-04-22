@@ -15,9 +15,9 @@ class PlayerTrackActivity : AppCompatActivity() {
     private var selectedPlayerId: String? = null
     private var selectedSkill: String? = null
 
-    private lateinit var etKills: EditText
-    private lateinit var etDeaths: EditText
-    private lateinit var etAssists: EditText
+    private lateinit var txtKills: TextView
+    private lateinit var txtDeaths: TextView
+    private lateinit var txtAssists: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -28,9 +28,9 @@ class PlayerTrackActivity : AppCompatActivity() {
             finish()
         }
 
-        etKills = findViewById(R.id.etKills)
-        etDeaths = findViewById(R.id.etDeaths)
-        etAssists = findViewById(R.id.etAssists)
+        txtKills = findViewById(R.id.txtKillsValue)
+        txtDeaths = findViewById(R.id.txtDeathsValue)
+        txtAssists = findViewById(R.id.txtAssistsValue)
 
         db = FirebaseFirestore.getInstance()
         currentMatchId = intent.getStringExtra("MATCH_ID") ?: "worlds2024_final"
@@ -38,19 +38,50 @@ class PlayerTrackActivity : AppCompatActivity() {
         setupTeamSelection()
         setupSkillSelection()
         setupSaveButton()
+        findViewById<Button>(R.id.btnKillsPlus).setOnClickListener {
+            updateStat(txtKills, +1)
+        }
+        findViewById<Button>(R.id.btnKillsMinus).setOnClickListener {
+            updateStat(txtKills, -1)
+        }
+        findViewById<Button>(R.id.btnDeathsPlus).setOnClickListener {
+            updateStat(txtDeaths, +1)
+        }
+        findViewById<Button>(R.id.btnDeathsMinus).setOnClickListener {
+            updateStat(txtDeaths, -1)
+        }
+        findViewById<Button>(R.id.btnAssistsPlus).setOnClickListener {
+            updateStat(txtAssists, +1)
+        }
+        findViewById<Button>(R.id.btnAssistsMinus).setOnClickListener {
+            updateStat(txtAssists, -1)
+        }
     }
 
     private fun setupTeamSelection() {
         val rgTeam = findViewById<RadioGroup>(R.id.rgTeam)
+
+        var isFirstTrigger = true
+
         rgTeam.setOnCheckedChangeListener { _, checkedId ->
             selectedTeam = when (checkedId) {
                 R.id.rbTeamA -> "teamA"
                 R.id.rbTeamB -> "teamB"
                 else -> "teamA"
             }
-            loadPlayers()
+
+            // 避免 onCreate() 触发时重复加载
+            if (isFirstTrigger) {
+                isFirstTrigger = false
+            } else {
+                loadPlayers()
+            }
         }
-        rgTeam.check(R.id.rbTeamA)
+
+        // 延迟到 onCreate() 完成后设置默认选择，不立即触发多次加载
+        rgTeam.post {
+            rgTeam.check(R.id.rbTeamA)
+        }
     }
 
     private fun loadPlayers() {
@@ -91,9 +122,9 @@ class PlayerTrackActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvSelectedPlayer).text =
             "Selected: ${playerData["name"]} (${playerData["kills"]}/${playerData["deaths"]}/${playerData["assists"]})"
 
-        etKills.setText(playerData["kills"]?.toString() ?: "0")
-        etDeaths.setText(playerData["deaths"]?.toString() ?: "0")
-        etAssists.setText(playerData["assists"]?.toString() ?: "0")
+        txtKills.text = (playerData["kills"] ?: 0).toString()
+        txtDeaths.text = (playerData["deaths"] ?: 0).toString()
+        txtAssists.text = (playerData["assists"] ?: 0).toString()
     }
 
     private fun setupSkillSelection() {
@@ -115,10 +146,9 @@ class PlayerTrackActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 安全转换输入值
-            val kills = etKills.text.toString().toIntOrNull() ?: 0
-            val deaths = etDeaths.text.toString().toIntOrNull() ?: 0
-            val assists = etAssists.text.toString().toIntOrNull() ?: 0
+            val kills = txtKills.text.toString().toIntOrNull() ?: 0
+            val deaths = txtDeaths.text.toString().toIntOrNull() ?: 0
+            val assists = txtAssists.text.toString().toIntOrNull() ?: 0
 
             val updates = hashMapOf<String, Any>(
                 "$selectedTeam.players.$selectedPlayerId.kills" to kills,
@@ -132,11 +162,28 @@ class PlayerTrackActivity : AppCompatActivity() {
                 .update(updates)
                 .addOnSuccessListener {
                     Toast.makeText(this, "update successfully", Toast.LENGTH_SHORT).show()
+
+                    db.collection("live_matches").document(currentMatchId)
+                        .get()
+                        .addOnSuccessListener { doc ->
+                            val team = doc.get(selectedTeam) as? Map<*, *>
+                            val players = team?.get("players") as? Map<*, *>
+                            val updatedPlayer = players?.get(selectedPlayerId) as? Map<*, *>
+                            updatedPlayer?.let {
+                                selectPlayer(selectedPlayerId!!, it)
+                            }
+                        }
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "update failed: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         }
+    }
+
+    private fun updateStat(textView: TextView, delta: Int) {
+        val current = textView.text.toString().toIntOrNull() ?: 0
+        val updated = (current + delta).coerceAtLeast(0)
+        textView.text = updated.toString()
     }
 
     private fun getPlayerAvatar(name: String): Int = when (name.lowercase()) {

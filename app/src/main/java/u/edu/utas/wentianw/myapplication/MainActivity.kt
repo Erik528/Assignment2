@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
 //        val db = Firebase.firestore
 //        Log.d(FIREBASE_TAG, "Firebase connected: ${db.app.name}")
 
-
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -99,7 +98,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
     }
 //    fun insertStructuredPlayerData() {
 //        val db = FirebaseFirestore.getInstance()
